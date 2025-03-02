@@ -3,7 +3,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'MCK Miền Nam',
-  description: 'MCK App',
+  description: 'Hệ thống xác minh lý lịch',
   generator: 'MCK',
 }
 
