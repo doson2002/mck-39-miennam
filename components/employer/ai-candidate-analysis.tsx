@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from "react"
@@ -52,12 +51,14 @@ export function AICandidateAnalysis() {
   const [loading, setLoading] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null)
+  const [isAnalyzed, setIsAnalyzed] = useState(false) // State để kiểm soát hiển thị các phần khác
 
   const handleAnalyze = async () => {
     setLoading(true)
     // Giả lập phân tích AI
     setTimeout(() => {
       setLoading(false)
+      setIsAnalyzed(true) // Sau khi phân tích xong, hiển thị các phần khác
     }, 2000)
   }
 
@@ -72,136 +73,141 @@ export function AICandidateAnalysis() {
         <h1 className="text-3xl font-bold">Phân tích ứng viên bằng AI</h1>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Form phân tích ứng viên mới */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Phân tích ứng viên mới</h2>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="resume">Nội dung CV</Label>
-              <Textarea id="resume" placeholder="Dán nội dung CV của ứng viên vào đây..." rows={8} />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="jobDescription">Mô tả công việc</Label>
-              <Textarea id="jobDescription" placeholder="Dán mô tả công việc cần tuyển vào đây..." rows={4} />
-            </div>
-            <Button className="w-full" onClick={handleAnalyze} disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Đang phân tích...
-                </>
-              ) : (
-                "Phân tích ứng viên"
-              )}
-            </Button>
+      {/* Form phân tích ứng viên mới - Luôn hiển thị */}
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold mb-4">Phân tích ứng viên mới</h2>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="resume">Nội dung CV</Label>
+            <Textarea id="resume" placeholder="Dán nội dung CV của ứng viên vào đây..." rows={8} />
           </div>
-        </Card>
+          <div className="space-y-2">
+            <Label htmlFor="jobDescription">Mô tả công việc</Label>
+            <Textarea id="jobDescription" placeholder="Dán mô tả công việc cần tuyển vào đây..." rows={4} />
+          </div>
+          <Button className="w-full" onClick={handleAnalyze} disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Đang phân tích...
+              </>
+            ) : (
+              "Phân tích ứng viên"
+            )}
+          </Button>
+        </div>
+      </Card>
 
-        {/* Thống kê tổng quan */}
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Thống kê ứng viên</h2>
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-primary/10 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-primary" />
-                  <span className="font-medium">Tổng ứng viên</span>
+      {/* Chỉ hiển thị các phần khác sau khi phân tích */}
+      {isAnalyzed && (
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Thống kê tổng quan */}
+          <Card className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Thống kê ứng viên</h2>
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-primary/10 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    <span className="font-medium">Tổng ứng viên</span>
+                  </div>
+                  <p className="text-2xl font-bold mt-2">24</p>
                 </div>
-                <p className="text-2xl font-bold mt-2">24</p>
+                <div className="p-4 bg-green-100 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <span className="font-medium">Đã xác minh</span>
+                  </div>
+                  <p className="text-2xl font-bold mt-2">18</p>
+                </div>
               </div>
-              <div className="p-4 bg-green-100 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span className="font-medium">Đã xác minh</span>
+              <div>
+                <h3 className="font-medium mb-2">Phân bố điểm đánh giá</h3>
+                <div className="space-y-2">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>90-100</span>
+                      <span>2 ứng viên</span>
+                    </div>
+                    <Progress value={20} className="h-2" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>80-89</span>
+                      <span>8 ứng viên</span>
+                    </div>
+                    <Progress value={40} className="h-2" />
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>70-79</span>
+                      <span>10 ứng viên</span>
+                    </div>
+                    <Progress value={50} className="h-2" />
+                  </div>
                 </div>
-                <p className="text-2xl font-bold mt-2">18</p>
               </div>
             </div>
-            <div>
-              <h3 className="font-medium mb-2">Phân bố điểm đánh giá</h3>
-              <div className="space-y-2">
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>90-100</span>
-                    <span>2 ứng viên</span>
-                  </div>
-                  <Progress value={20} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>80-89</span>
-                    <span>8 ứng viên</span>
-                  </div>
-                  <Progress value={40} className="h-2" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>70-79</span>
-                    <span>10 ứng viên</span>
-                  </div>
-                  <Progress value={50} className="h-2" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
+          </Card>
+        </div>
+      )}
 
       {/* Bảng xếp hạng ứng viên */}
-      <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Xếp hạng ứng viên</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Xếp hạng</TableHead>
-              <TableHead>Họ và tên</TableHead>
-              <TableHead>Vị trí</TableHead>
-              <TableHead>Điểm đánh giá</TableHead>
-              <TableHead>Trạng thái</TableHead>
-              <TableHead>Thao tác</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {analyzedCandidates.map((candidate, index) => (
-              <TableRow key={candidate.id}>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    {index === 0 && <Award className="h-5 w-5 text-yellow-500" />}
-                    {index + 1}
-                  </div>
-                </TableCell>
-                <TableCell>{candidate.name}</TableCell>
-                <TableCell>{candidate.position}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Progress value={candidate.matchScore} className="w-20 h-2" />
-                    <span className="font-medium">{candidate.matchScore}%</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {candidate.verificationStatus === "verified" ? (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Đã xác minh
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      <AlertTriangle className="h-3 w-3 mr-1" />
-                      Chờ xác minh
-                    </span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm" onClick={() => viewCandidateDetails(candidate)}>
-                    Xem chi tiết
-                  </Button>
-                </TableCell>
+      {isAnalyzed && (
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Xếp hạng ứng viên</h2>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Xếp hạng</TableHead>
+                <TableHead>Họ và tên</TableHead>
+                <TableHead>Vị trí</TableHead>
+                <TableHead>Điểm đánh giá</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead>Thao tác</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+            </TableHeader>
+            <TableBody>
+              {analyzedCandidates.map((candidate, index) => (
+                <TableRow key={candidate.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {index === 0 && <Award className="h-5 w-5 text-yellow-500" />}
+                      {index + 1}
+                    </div>
+                  </TableCell>
+                  <TableCell>{candidate.name}</TableCell>
+                  <TableCell>{candidate.position}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Progress value={candidate.matchScore} className="w-20 h-2" />
+                      <span className="font-medium">{candidate.matchScore}%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {candidate.verificationStatus === "verified" ? (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                        Đã xác minh
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <AlertTriangle className="h-3 w-3 mr-1" />
+                        Chờ xác minh
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="outline" size="sm" onClick={() => viewCandidateDetails(candidate)}>
+                      Xem chi tiết
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
+      )}
 
       {/* Dialog chi tiết ứng viên */}
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
@@ -280,4 +286,3 @@ export function AICandidateAnalysis() {
     </div>
   )
 }
-
