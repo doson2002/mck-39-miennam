@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { FileText, FileCheck, Briefcase, UserCheck, LayoutDashboard } from "lucide-react"
+import { FileText, FileCheck, Briefcase, UserCheck, LayoutDashboard, Brain } from "lucide-react"
 
 const items = [
   {
@@ -31,6 +31,11 @@ const items = [
     title: "Kiểm tra lý lịch",
     href: "/nha-tuyen-dung/kiem-tra",
     icon: UserCheck,
+  },
+  {
+    title: "Phân tích AI",
+    href: "/nha-tuyen-dung/phan-tich",
+    icon: Brain,
   },
 ]
 
